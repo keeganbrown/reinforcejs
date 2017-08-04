@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const config = require('./webpack.config.base');
+const config = require('./config.base');
 const auth = process.env.API_AUTH || '';
 
 config.entry = [
@@ -44,19 +44,13 @@ config.module.rules = config.module.rules.concat([
     }
   },
   {
-    test: /\.less/,
+    test: /\.less|\.css/,
     use: [
       'style-loader',
       {
         loader: 'css-loader',
         options: {
           importLoaders: 1,
-          sourceMap: true
-        }
-      },
-      {
-        loader: 'less-loader',
-        options: {
           sourceMap: true
         }
       }

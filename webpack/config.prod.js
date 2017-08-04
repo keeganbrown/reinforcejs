@@ -11,7 +11,7 @@ config.output.filename = '[name].[chunkhash].js';
 
 config.module.rules = config.module.rules.concat([
   {
-    test: /\.less/,
+    test: /\.less|\.css/,
     use: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: [
@@ -21,8 +21,7 @@ config.module.rules = config.module.rules.concat([
             importLoaders: 1,
             minimize: true
           }
-        },
-        'less-loader'
+        }
       ]
     })
   }

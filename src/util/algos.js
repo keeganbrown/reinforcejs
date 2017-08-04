@@ -27,9 +27,13 @@ var samplei = function(w) {
   var r = randf(0,1);
   var x = 0.0;
   var i = 0;
-  while(true) {
+  let loop = true;
+  while(loop) {
     x += w[i];
-    if(x > r) { return i; }
+    if(x > r) {
+      loop = false;
+      return i;
+    }
     i++;
   }
   return w.length - 1; // pretty sure we should never get here?

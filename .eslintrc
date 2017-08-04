@@ -1,0 +1,5 @@
+{
+  "extends": "smashing-boxes/react",
+  "rules": {
+  }
+}

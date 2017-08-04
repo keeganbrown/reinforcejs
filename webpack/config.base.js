@@ -1,14 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json']
   },
-  entry: ['./src/index.jsx'],
+  entry: ['./src/index.js'],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -16,7 +15,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['stage-2', 'react', 'es2015'] } },
+      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: { presets: ['stage-2', 'es2015'] } },
       { test: /\.(gif|png|jpg|svg|woff|woff2|ttf|eot)$/, loader: 'url-loader', query: { limit: 25000 } },
       {
         test: /\.glsl$/,
