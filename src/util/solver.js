@@ -1,45 +1,47 @@
+import Mat from './matrix';
 
-var Solver = function() {
-  this.decay_rate = 0.999;
-  this.smooth_eps = 1e-8;
-  this.step_cache = {};
-}
-Solver.prototype = {
-  step: function(model, step_size, regc, clipval) {
+class Solver {
+  constructor() {
+    this.decayRate = 0.999;
+    this.smoothEps = 1e-8;
+    this.stepCache = {};
+  }
+  step(model, stepSize, regc, clipval) {
     // perform parameter update
-    var solver_stats = {};
-    var num_clipped = 0;
-    var num_tot = 0;
-    for(var k in model) {
-      if(model.hasOwnProperty(k)) {
-        var m = model[k]; // mat ref
-        if(!(k in this.step_cache)) { this.step_cache[k] = new Mat(m.n, m.d); }
-        var s = this.step_cache[k];
-        for(var i=0,n=m.w.length;i<n;i++) {
-
+    const solverStats = {};
+    let numClipped = 0.0;
+    let numTotal = 0.0;
+    for (const k in model) {
+      if (Object.prototype.hasOwnProperty.call(model, k)) {
+        const m = model[k];  // mat ref
+        if (!(k in this.stepCache)) {
+          this.stepCache[k] = new Mat(m.n, m.d);
+        }
+        const s = this.stepCache[k];
+        for (let i = 0, n = m.w.length; i < n; i++) {
           // rmsprop adaptive learning rate
-          var mdwi = m.dw[i];
-          s.w[i] = s.w[i] * this.decay_rate + (1.0 - this.decay_rate) * mdwi * mdwi;
+          let mdwi = m.dw[i];
+          s.w[i] = s.w[i] * this.decayRate + (1.0 - this.decayRate) * mdwi * mdwi;
 
           // gradient clip
-          if(mdwi > clipval) {
+          if (mdwi > clipval) {
             mdwi = clipval;
-            num_clipped++;
+            numClipped++;
           }
-          if(mdwi < -clipval) {
+          if (mdwi < -clipval) {
             mdwi = -clipval;
-            num_clipped++;
+            numClipped++;
           }
-          num_tot++;
+          numTotal++;
 
           // update (and regularize)
-          m.w[i] += - step_size * mdwi / Math.sqrt(s.w[i] + this.smooth_eps) - regc * m.w[i];
-          m.dw[i] = 0; // reset gradients for next iteration
+          m.w[i] += -stepSize * mdwi / Math.sqrt(s.w[i] + this.smoothEps) - regc * m.w[i];
+          m.dw[i] = 0;  // reset gradients for next iteration
         }
       }
     }
-    solver_stats['ratio_clipped'] = num_clipped*1.0/num_tot;
-    return solver_stats;
+    solverStats.ratioClipped = numClipped / numTotal;
+    return solverStats;
   }
 }
 

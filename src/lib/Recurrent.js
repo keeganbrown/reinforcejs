@@ -1,5 +1,5 @@
-
 import assert from '../util/assert';
+
 import {
   gaussRandom,
   randf,
@@ -10,12 +10,23 @@ import {
   fillRand,
   gradFillConst
 } from '../util/randoms';
+
 import zeros from '../util/zeros';
-import Mat from '../util/matrix';
+
+import Mat, {
+  copyMat,
+  copyNet,
+  updateMat,
+  updateNet
+} from '../util/matrix';
+
 import Graph from '../util/graph';
 import Solver from '../util/solver';
 import {
-  softmax
+  softmax,
+  sig,
+  maxi,
+  samplei
 } from '../util/algos';
 import {
   initLSTM,
@@ -35,7 +46,9 @@ const Recurrent = {
   zeros,
   maxi,
   samplei,
+  sig,
   randi,
+  randf,
   randn,
   softmax,
   // classes
@@ -44,6 +57,10 @@ const Recurrent = {
   forwardLSTM,
   initLSTM,
   // more utils
+  gradFillConst,
+  gaussRandom,
+  fillRandn,
+  fillRand,
   updateMat,
   updateNet,
   copyMat,

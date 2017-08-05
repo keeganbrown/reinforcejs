@@ -1,3 +1,3 @@
-/*
-    ./webpack.config.js
-*/
+import Reinforce from './src';
+
+export default Reinforce;

@@ -30,7 +30,24 @@ module.exports = {
       'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') }
     }),
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      filename: 'index.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/assets/gridworld_dp.html',
+      filename: 'gridworld_dp.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/assets/gridworld_td.html',
+      filename: 'gridworld_td.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/assets/waterworld.html',
+      filename: 'waterworld.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: 'src/assets/puckworld.html',
+      filename: 'puckworld.html'
     })
   ]
 };
