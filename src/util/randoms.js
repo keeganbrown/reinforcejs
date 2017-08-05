@@ -1,40 +1,61 @@
 import Mat from './matrix.js';
 
 // Random numbers utils
-var return_v = false;
-var v_val = 0.0;
-var gaussRandom = function() {
-  if(return_v) {
-    return_v = false;
-    return v_val;
-  }
-  var u = 2*Math.random()-1;
-  var v = 2*Math.random()-1;
-  var r = u*u + v*v;
-  if(r == 0 || r > 1) return gaussRandom();
-  var c = Math.sqrt(-2*Math.log(r)/r);
-  v_val = v*c; // cache this
-  return_v = true;
-  return u*c;
-}
-var randf = function(a, b) { return Math.random()*(b-a)+a; }
-var randi = function(a, b) { return Math.floor(Math.random()*(b-a)+a); }
-var randn = function(mu, std){ return mu+gaussRandom()*std; }
+let returnValue = false;
+let variableVal = 0.0;
 
-// return Mat but filled with random numbers from gaussian
-var RandMat = function(n,d,mu,std) {
-  var m = new Mat(n, d);
-  fillRandn(m,mu,std);
-  //fillRand(m,-std,std); // kind of :P
-  return m;
+function gaussRandom() {
+  if (returnValue) {
+    returnValue = false;
+    return variableVal;
+  }
+  const u = 2 * Math.random() - 1;
+  const v = 2 * Math.random() - 1;
+  const r = u * u + v * v;
+  if (r === 0 || r > 1) {
+    return gaussRandom();
+  }
+  const c = Math.sqrt(-2 * Math.log(r) / r);
+  variableVal = v * c; // cache this
+  returnValue = true;
+  return u * c;
+}
+
+function randf(a, b) {
+  return Math.random() * (b - a) + a;
+}
+function randi(a, b) {
+  return Math.floor(Math.random() * (b - a) + a);
+}
+function randn(mu, std) {
+  return mu + gaussRandom() * std;
 }
 
 // Mat utils
 // fill matrix with random gaussian numbers
-var fillRandn = function(m, mu, std) { for(var i=0,n=m.w.length;i<n;i++) { m.w[i] = randn(mu, std); } }
-var fillRand = function(m, lo, hi) { for(var i=0,n=m.w.length;i<n;i++) { m.w[i] = randf(lo, hi); } }
-var gradFillConst = function(m, c) { for(var i=0,n=m.dw.length;i<n;i++) { m.dw[i] = c } }
+function fillRandn(m, mu, std) {
+  for (let i = 0, n = m.w.length; i < n; i++) {
+    m.w[i] = randn(mu, std);
+  }
+}
+function fillRand(m, lo, hi) {
+  for (let i = 0, n = m.w.length; i < n; i++) {
+    m.w[i] = randf(lo, hi);
+  }
+}
+function gradFillConst(m, c) {
+  for (let i = 0, n = m.dw.length; i < n; i++) {
+    m.dw[i] = c;
+  }
+}
 
+// return Mat but filled with random numbers from gaussian
+function RandMat(n, d, mu, std) {
+  const m = new Mat(n, d);
+  fillRandn(m, mu, std);
+  // fillRand(m,-std,std); // kind of :P
+  return m;
+}
 
 export {
   gaussRandom,
@@ -45,4 +66,4 @@ export {
   fillRandn,
   fillRand,
   gradFillConst
-}
+};

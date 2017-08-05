@@ -13,6 +13,7 @@ import {
 import zeros from '../util/zeros';
 import Mat from '../util/matrix';
 import Graph from '../util/graph';
+import Solver from '../util/solver';
 import {
   softmax
 } from '../util/algos';
@@ -20,11 +21,15 @@ import {
   initLSTM,
   forwardLSTM
 } from '../util/lstm';
+import {
+  netToJSON,
+  netFromJSON,
+  netZeroGrads,
+  netFlattenGrads
+} from '../util/net';
 
 
-import RL from './rln.js';
-
-var R = {
+const Recurrent = {
   // various utils
   assert,
   zeros,
@@ -52,7 +57,4 @@ var R = {
   Graph
 }; // the Recurrent library
 
-
-
-
-export default R;
+export default Recurrent;

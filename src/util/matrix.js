@@ -1,92 +1,92 @@
 import assert from './assert';
-import zeros from './zeros'
+import zeros from './zeros';
 
 // Mat holds a matrix
-var Mat = function(n,d) {
-  // n is number of rows d is number of columns
-  this.n = n;
-  this.d = d;
-  this.w = zeros(n * d);
-  this.dw = zeros(n * d);
-}
-Mat.prototype = {
-  get: function(row, col) {
+class Mat {
+  constructor(n, d) {
+    // n is number of rows d is number of columns
+    this.n = n;
+    this.d = d;
+    this.w = zeros(n * d);
+    this.dw = zeros(n * d);
+  }
+
+  get(row, col) {
     // slow but careful accessor function
     // we want row-major order
-    var ix = (this.d * row) + col;
+    const ix = (this.d * row) + col;
     assert(ix >= 0 && ix < this.w.length);
     return this.w[ix];
-  },
-  set: function(row, col, v) {
+  }
+  set(row, col, v) {
     // slow but careful accessor function
-    var ix = (this.d * row) + col;
+    const ix = (this.d * row) + col;
     assert(ix >= 0 && ix < this.w.length);
     this.w[ix] = v;
-  },
-  setFrom: function(arr) {
-    for(var i=0,n=arr.length;i<n;i++) {
+  }
+  setFrom(arr) {
+    for (let i = 0, n = arr.length; i < n; i++) {
       this.w[i] = arr[i];
     }
-  },
-  setColumn: function(m, i) {
-    for(var q=0,n=m.w.length;q<n;q++) {
+  }
+  setColumn(m, i) {
+    for (let q = 0, n = m.w.length; q < n; q++) {
       this.w[(this.d * q) + i] = m.w[q];
     }
-  },
-  toJSON: function() {
-    var json = {};
-    json['n'] = this.n;
-    json['d'] = this.d;
-    json['w'] = this.w;
+  }
+  toJSON() {
+    const json = {};
+    json.n = this.n;
+    json.d = this.d;
+    json.w = this.w;
     return json;
-  },
-  fromJSON: function(json) {
+  }
+  fromJSON(json) {
     this.n = json.n;
     this.d = json.d;
     this.w = zeros(this.n * this.d);
     this.dw = zeros(this.n * this.d);
-    for(var i=0,n=this.n * this.d;i<n;i++) {
-      this.w[i] = json.w[i]; // copy over weights
+    for (let i = 0, n = this.n * this.d; i < n; i++) {
+      this.w[i] = json.w[i];  // copy over weights
     }
   }
 }
 
 
-var copyMat = function(b) {
-  var a = new Mat(b.n, b.d);
+function copyMat(b) {
+  const a = new Mat(b.n, b.d);
   a.setFrom(b.w);
   return a;
 }
 
-var copyNet = function(net) {
+function copyNet(net) {
   // nets are (k,v) pairs with k = string key, v = Mat()
-  var new_net = {};
-  for(var p in net) {
-    if(net.hasOwnProperty(p)){
-      new_net[p] = copyMat(net[p]);
+  const newNet = {};
+  for (const p in net) {
+    if (Object.prototype.hasOwnProperty.call(net, p)) {
+      newNet[p] = copyMat(net[p]);
     }
   }
-  return new_net;
+  return newNet;
 }
 
-var updateMat = function(m, alpha) {
+function updateMat(m, alpha) {
   // updates in place
-  for(var i=0,n=m.n*m.d;i<n;i++) {
-    if(m.dw[i] !== 0) {
-      m.w[i] += - alpha * m.dw[i];
+  for (let i = 0, n = m.n * m.d; i < n; i++) {
+    if (m.dw[i] !== 0) {
+      m.w[i] += -alpha * m.dw[i];
       m.dw[i] = 0;
     }
   }
 }
 
-var updateNet = function(net, alpha) {
-  for(var p in net) {
-    if(net.hasOwnProperty(p)){
+function updateNet(net, alpha) {
+  for (const p in net) {
+    if (Object.prototype.hasOwnProperty.call(net, p)) {
       updateMat(net[p], alpha);
     }
   }
 }
-
 
 
 export default Mat;
@@ -96,4 +96,4 @@ export {
   copyNet,
   updateMat,
   updateNet
-}
+};

@@ -1,1 +1,1 @@
-import RL from './lib/rl.js'
+import Reinforce from './lib/Reinforce';

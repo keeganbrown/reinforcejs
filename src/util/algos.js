@@ -1,36 +1,37 @@
+import Mat from './matrix';
+
 import {
-  randf,
+  randf
 } from '../util/randoms';
 
-var sig = function(x) {
+function sig(x) {
   // helper function for computing sigmoid
-  return 1.0/(1+Math.exp(-x));
+  return 1.0 / (1 + Math.exp(-x));
 }
 
-var maxi = function(w) {
+function maxi(w) {
   // argmax of array w
-  var maxv = w[0];
-  var maxix = 0;
-  for(var i=1,n=w.length;i<n;i++) {
-    var v = w[i];
-    if(v > maxv) {
+  let maxv = w[0];
+  let maxix = 0;
+  for (let i = 1, n = w.length; i < n; i++) {
+    if (w[i] > maxv) {
       maxix = i;
-      maxv = v;
+      maxv = w[i];
     }
   }
   return maxix;
 }
 
-var samplei = function(w) {
+function samplei(w) {
   // sample argmax from w, assuming w are
   // probabilities that sum to one
-  var r = randf(0,1);
-  var x = 0.0;
-  var i = 0;
+  const r = randf(0, 1);
+  let x = 0.0;
+  let i = 0;
   let loop = true;
-  while(loop) {
+  while (loop) {
     x += w[i];
-    if(x > r) {
+    if (x > r) {
       loop = false;
       return i;
     }
@@ -40,17 +41,26 @@ var samplei = function(w) {
 }
 
 
-var softmax = function(m) {
-  var out = new Mat(m.n, m.d); // probability volume
-  var maxval = -999999;
-  for(var i=0,n=m.w.length;i<n;i++) { if(m.w[i] > maxval) maxval = m.w[i]; }
+function softmax(m) {
+  const out = new Mat(m.n, m.d); // probability volume
+  let maxval = -999999;
+  let i = 0;
+  const n = m.w.length;
+  let s = 0.0;
 
-  var s = 0.0;
-  for(var i=0,n=m.w.length;i<n;i++) {
+  for (i = 0; i < n; i++) {
+    if (m.w[i] > maxval) {
+      maxval = m.w[i];
+    }
+  }
+
+  for (i = 0; i < n; i++) {
     out.w[i] = Math.exp(m.w[i] - maxval);
     s += out.w[i];
   }
-  for(var i=0,n=m.w.length;i<n;i++) { out.w[i] /= s; }
+  for (i = 0; i < n; i++) {
+    out.w[i] /= s;
+  }
 
   // no backward pass here needed
   // since we will use the computed probabilities outside
