@@ -55,10 +55,6 @@ config.module.rules = config.module.rules.concat([
         }
       }
     ]
-  },
-  {
-      test: /\.glsl$/,
-      loader: 'webpack-glsl'
   }
 ]);
 

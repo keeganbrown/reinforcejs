@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const config = require('./webpack.config.base');
-const CopyWepbackPlugin = require('copy-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
@@ -45,11 +44,7 @@ config.plugins = config.plugins.concat([
     output: {
       comments: false
     }
-  }),
-  new CopyWepbackPlugin([{
-    from: 'static',
-    to: './'
-  }])
+  })
 ]);
 
 module.exports = config;

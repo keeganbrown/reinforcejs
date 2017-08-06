@@ -7,11 +7,11 @@ var Vec = function(x, y) {
   this.y = y;
 }
 Vec.prototype = {
-  
+
   // utilities
   dist_from: function(v) { return Math.sqrt(Math.pow(this.x-v.x,2) + Math.pow(this.y-v.y,2)); },
   length: function() { return Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)); },
-  
+
   // new vector returning operations
   add: function(v) { return new Vec(this.x + v.x, this.y + v.y); },
   sub: function(v) { return new Vec(this.x - v.x, this.y - v.y); },
@@ -19,7 +19,7 @@ Vec.prototype = {
     return new Vec(this.x * Math.cos(a) + this.y * Math.sin(a),
                    -this.x * Math.sin(a) + this.y * Math.cos(a));
   },
-  
+
   // in place operations
   scale: function(s) { this.x *= s; this.y *= s; },
   normalize: function() { var d = this.length(); this.scale(1.0/d); }
@@ -43,7 +43,7 @@ var line_point_intersect = function(p1,p2,p0,rad) {
   var d = Math.abs((p2.x-p1.x)*(p1.y-p0.y)-(p1.x-p0.x)*(p2.y-p1.y));
   d = d / v.length();
   if(d > rad) { return false; }
-  
+
   v.normalize();
   v.scale(d);
   var up = p0.add(v);
@@ -86,11 +86,11 @@ var World = function() {
   this.agents = [];
   this.W = canvas.width;
   this.H = canvas.height;
-  
+
   this.clock = 0;
-  
+
   // set up walls in the world
-  this.walls = []; 
+  this.walls = [];
   var pad = 0;
   util_add_box(this.walls, pad, pad, this.W-pad*2, this.H-pad*2);
   /*
@@ -99,7 +99,7 @@ var World = function() {
   util_add_box(this.walls, 400, 100, 200, 300);
   this.walls.pop();
   */
-  
+
   // set up food and poison
   this.items = []
   for(var k=0;k<50;k++) {
@@ -111,11 +111,11 @@ var World = function() {
   }
 }
 
-World.prototype = {      
+World.prototype = {
   // helper function to get closest colliding walls/items
   stuff_collide_: function(p1, p2, check_walls, check_items) {
     var minres = false;
-    
+
     // collide with walls
     if(check_walls) {
       for(var i=0,n=this.walls.length;i<n;i++) {
@@ -134,7 +134,7 @@ World.prototype = {
         }
       }
     }
-    
+
     // collide with items
     if(check_items) {
       for(var i=0,n=this.items.length;i<n;i++) {
@@ -150,13 +150,13 @@ World.prototype = {
         }
       }
     }
-    
+
     return minres;
   },
   tick: function() {
     // tick the environment
     this.clock++;
-    
+
     // fix input to all agents based on environment
     // process eyes
     this.collpoints = [];
@@ -187,7 +187,7 @@ World.prototype = {
         }
       }
     }
-    
+
     // let the agents behave in the world based on their input
     for(var i=0,n=this.agents.length;i<n;i++) {
       this.agents[i].forward();
@@ -198,7 +198,7 @@ World.prototype = {
       var a = this.agents[i];
       a.op = a.p; // back up old position
       a.oangle = a.angle; // and angle
-      
+
       // execute agent's desired action
       var speed = 1;
       if(a.action === 0) {
@@ -223,7 +223,7 @@ World.prototype = {
       //if(res) {
         // wall collision...
       //}
-      
+
       // handle boundary conditions.. bounce agent
       if(a.p.x<1) { a.p.x=1; a.v.x=0; a.v.y=0;}
       if(a.p.x>this.W-1) { a.p.x=this.W-1; a.v.x=0; a.v.y=0;}
@@ -235,7 +235,7 @@ World.prototype = {
       // if(a.p.y<0) { a.p.y= this.H -1; };
       // if(a.p.y>this.H) { a.p.y= 1; };
     }
-    
+
     // tick all items
     var update_items = false;
     for(var j=0,m=this.agents.length;j<m;j++) {
@@ -245,17 +245,17 @@ World.prototype = {
     for(var i=0,n=this.items.length;i<n;i++) {
       var it = this.items[i];
       it.age += 1;
-      
+
       // see if some agent gets lunch
       for(var j=0,m=this.agents.length;j<m;j++) {
         var a = this.agents[j];
         var d = a.p.dist_from(it.p);
         if(d < it.rad + a.rad) {
-          
+
           // wait lets just make sure that this isn't through a wall
           //var rescheck = this.stuff_collide_(a.p, it.p, true, false);
           var rescheck = false;
-          if(!rescheck) { 
+          if(!rescheck) {
             // ding! nom nom nom
             if(it.type === 1) {
               a.digestion_signal += 1.0; // mmm delicious apple
@@ -271,7 +271,7 @@ World.prototype = {
           }
         }
       }
-        
+
       // move the items
       it.p.x += it.v.x;
       it.p.y += it.v.y;
@@ -284,7 +284,7 @@ World.prototype = {
         it.cleanup_ = true; // replace this one, has been around too long
         update_items = true;
       }
-      
+
     }
     if(update_items) {
       var nt = [];
@@ -301,7 +301,7 @@ World.prototype = {
       var newit = new Item(newitx, newity, newitt);
       this.items.push(newit);
     }
-    
+
     // agents are given the opportunity to learn based on feedback of their action on environment
     for(var i=0,n=this.agents.length;i<n;i++) {
       this.agents[i].backward();
@@ -327,30 +327,30 @@ var Agent = function() {
   this.v = new Vec(0,0);
   this.op = this.p; // old position
   this.angle = 0; // direction facing
-  
+
   this.actions = [];
   //this.actions.push([0,0]);
   this.actions.push(0);
   this.actions.push(1);
   this.actions.push(2);
   this.actions.push(3);
-  
+
   // properties
   this.rad = 10;
   this.eyes = [];
   for(var k=0;k<30;k++) { this.eyes.push(new Eye(k*0.21)); }
-  
+
   this.brain = null; // set from outside
 
   this.reward_bonus = 0.0;
   this.digestion_signal = 0.0;
-  
+
   this.apples = 0;
   this.poison = 0;
 
   // outputs on world
   this.action = 0;
-  
+
   this.prevactionix = -1;
   this.num_states = this.eyes.length * 5 + 2;
 }

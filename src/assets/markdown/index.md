@@ -1,57 +1,3 @@
-<!doctype html>
-<html lang="en">
- <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>REINFORCEjs: Gridworld with Dynamic Programming</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- jquery and jqueryui -->
-  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-
-  <!-- bootstrap -->
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-  #wrap {
-    width:800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  </style>
-
-  <script>
-  function start() {
-    $(".md").each(function(){
-      $(this).html(marked($(this).html()));
-    });
-  }
-  </script>
- </head>
- <body onload="start();">
-
-  <a href="https://github.com/karpathy/reinforcejs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-
-   <div id="wrap">
-
-   <div id="mynav" style="border-bottom:1px solid #999; padding-bottom: 10px; margin-bottom:50px;">
-    <div>
-      <img src="<%= require('./assets/loop.svg') %>" style="width:50px;height:50px;float:left;">
-      <h1 style="font-size:50px;">REINFORCE<span style="color:#058;">js</span></h1>
-    </div>
-    <ul class="nav nav-pills">
-      <li role="presentation" class="active"><a href="index.html">About</a></li>
-      <li role="presentation"><a href="gridworld_dp.html">GridWorld: DP</a></li>
-      <li role="presentation"><a href="gridworld_td.html">GridWorld: TD</a></li>
-      <li role="presentation"><a href="puckworld.html">PuckWorld: DQN</a></li>
-      <li role="presentation"><a href="waterworld.html">WaterWorld: DQN</a></li>
-    </ul>
-   </div>
-
-   <div id="exp" class="md">
 
 # About
 
@@ -62,7 +8,7 @@
 For solving finite (and not too large), deterministic MDPs. The solver uses standard tabular methods will no bells and whistles, and the environment must provide the dynamics.
 
 <div style="text-align:justify; margin: 20px; float:right; max-width:300px;">
-<img src="img/dpsolved.jpeg" style="max-width:300px;"><br>
+<img src="../img/dpsolved.jpeg" style="max-width:300px;"><br>
 Right: A simple Gridworld solved with a Dynamic Programming. Very exciting. Head over to the <a href="gridworld_dp.html">GridWorld: DP demo</a> to play with the GridWorld environment and policy iteration.
 </div>
 
@@ -113,8 +59,3 @@ The full source code is on <a href="https://github.com/karpathy/reinforcejs">Git
 
 
 <br><br><br><br><br><br><br>
-   </div>
-
-   </div>
- </body>
-</html>
